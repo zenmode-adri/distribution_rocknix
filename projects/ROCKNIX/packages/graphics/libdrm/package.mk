@@ -41,6 +41,13 @@ listcontains "${GRAPHIC_DRIVERS}" "freedreno" &&
 listcontains "${GRAPHIC_DRIVERS}" "etnaviv" &&
   PKG_MESON_OPTS_TARGET+=" -Detnaviv=enabled" || PKG_MESON_OPTS_TARGET+=" -Detnaviv=disabled"
 
+pre_build_target() {
+  # Recover from corrupt meson state: meson-private exists but build.ninja is missing
+  if [ -d "${PKG_BUILD}/.${TARGET_NAME}" ] && [ ! -f "${PKG_BUILD}/.${TARGET_NAME}/build.ninja" ]; then
+    rm -rf "${PKG_BUILD}/.${TARGET_NAME}/meson-private"
+  fi
+}
+
 post_makeinstall_target() {
   mkdir -p ${INSTALL}/usr/bin
     cp -a ${PKG_BUILD}/.${TARGET_NAME}/tests/modetest/modetest ${INSTALL}/usr/bin/
