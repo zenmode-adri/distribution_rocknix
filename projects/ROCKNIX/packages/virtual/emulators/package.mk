@@ -8,7 +8,7 @@ PKG_SECTION="emulation" # Do not change to virtual or makeinstall_target will no
 PKG_LONGDESC="Emulation metapackage."
 PKG_TOOLCHAIN="manual"
 
-PKG_EMUS="amiberry flycast-sa flycast2022-sa gzdoom-sa hatarisa hypseus-singe moonlight mupen64plus-sa openbor openbor-ff free-j2me pico-8 ppsspp-sa vice-sa wine cpymo mrp-sa eka2l1-sa onscripter-sa"
+PKG_EMUS="amiberry flycast-sa flycast2022-sa gzdoom-sa moonlight mupen64plus-sa openbor openbor-ff pico-8 ppsspp-sa onscripter-sa"
 EMUS_32BIT=""
 
 PKG_RETROARCH="core-info libretro-database retroarch retroarch-assets retroarch-joypads retroarch-overlays slang-shaders"
@@ -19,7 +19,7 @@ LIBRETRO_CORES="81-lr a5200-lr arduous-lr atari800-lr b2-lr beetle-gba-lr beetle
                 dosbox-core-lr dosbox-pure-lr easyrpg-lr emuscv-lr fake08-lr fbalpha2012-lr                                          \
                 fbalpha2019-lr fbneo-lr fceumm-lr flycast-lr fmsx-lr freechaf-lr freeintv-lr freej2me-lr fuse-lr gambatte-lr         \
                 gam4980-lr gearboy-lr gearcoleco-lr gearsystem-lr genesis-plus-gx-lr genesis-plus-gx-wide-lr gw-lr handy-lr hatari-lr \
-                hbmame-lr idtech-lr jaxe-lr mame-lr mame2003-plus-lr mame2010-lr mame2015-lr melonds-lr melonds-ds-lr mesen-lr mgba-lr \
+                hbmame-lr idtech-lr jaxe-lr mame2003-plus-lr mame2010-lr mame2015-lr melonds-lr melonds-ds-lr mesen-lr mgba-lr \
                 minivmac-lr mojozork-lr mu-lr mupen64plus-lr mupen64plus-nx-lr neocd_lr nestopia-lr np2kai-lr o2em-lr onscripter-lr  \
                 opera-lr parallel-n64-lr pcsx_rearmed-lr picodrive-lr pokemini-lr potator-lr ppsspp-lr prosystem-lr puae-lr         \
                 puae2021-lr px68k-lr quasi88-lr quicknes-lr race-lr same_cdi-lr sameboy-lr sameduck-lr scummvm-lr smsplus-gx-lr     \
@@ -40,7 +40,7 @@ case "${DEVICE}" in
   RK3326*)
     [ "${ENABLE_32BIT}" == "true" ] && EMUS_32BIT="box86 desmume-lr gpsp-lr gpsp_ezode-lr pcsx_rearmed-lr"
     PKG_DEPENDS_TARGET+=" common-shaders glsl-shaders"
-    PKG_EMUS+=" drastic-sa drastic_adv-sa"
+    PKG_EMUS+=" drastic-sa drastic_adv-sa portmaster scummvmsa"
     LIBRETRO_CORES+=" flycast2021-lr geolith-lr uae4arm"
     PKG_RETROARCH+=" retropie-shaders"
     ;;

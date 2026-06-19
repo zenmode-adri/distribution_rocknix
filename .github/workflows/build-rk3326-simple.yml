@@ -3,13 +3,78 @@ name: Build RK3326
 on:
   workflow_dispatch:
 
+permissions:
+  actions: write
+  contents: write
+  packages: write
+
 jobs:
-  build-rk3326:
-    uses: ./.github/workflows/build-device.yml
+  build-docker:
+    uses: ./.github/workflows/build-docker-image.yml
+    with:
+      OWNER_LC: zenmode-adri
+    secrets: inherit
+
+  build-arm:
+    needs: build-docker
+    uses: ./.github/workflows/build-arm.yml
     with:
       PROJECT: ROCKNIX
       DEVICE: RK3326
       OWNER_LC: zenmode-adri
-      NIGHTLY: false
-      OFFICIAL: false
+    secrets: inherit
+
+  build-aarch64-toolchain:
+    needs: build-docker
+    uses: ./.github/workflows/build-aarch64-toolchain.yml
+    with:
+      PROJECT: ROCKNIX
+      DEVICE: RK3326
+      OWNER_LC: zenmode-adri
+    secrets: inherit
+
+  build-aarch64:
+    needs: build-aarch64-toolchain
+    uses: ./.github/workflows/build-aarch64.yml
+    with:
+      PROJECT: ROCKNIX
+      DEVICE: RK3326
+      OWNER_LC: zenmode-adri
+    secrets: inherit
+
+  build-aarch64-emu-libretro:
+    needs:
+      - build-aarch64
+    if: ${{ always() && !cancelled() && !contains(needs.*.result, 'failure') }}
+    uses: ./.github/workflows/build-aarch64-emu-libretro.yml
+    with:
+      PROJECT: ROCKNIX
+      DEVICE: RK3326
+      OWNER_LC: zenmode-adri
+    secrets: inherit
+
+  build-aarch64-emu-standalone:
+    needs:
+      - build-aarch64
+    if: ${{ always() && !cancelled() && !contains(needs.*.result, 'failure') }}
+    uses: ./.github/workflows/build-aarch64-emu-standalone.yml
+    with:
+      PROJECT: ROCKNIX
+      DEVICE: RK3326
+      OWNER_LC: zenmode-adri
+    secrets: inherit
+
+  build-aarch64-image:
+    needs:
+      - build-aarch64-emu-libretro
+      - build-aarch64-emu-standalone
+      - build-arm
+    if: ${{ always() && !cancelled() && !contains(needs.*.result, 'failure') }}
+    uses: ./.github/workflows/build-aarch64-image.yml
+    with:
+      PROJECT: ROCKNIX
+      DEVICE: RK3326
+      OWNER_LC: zenmode-adri
+      NIGHTLY: "yes"
+      OFFICIAL: "no"
     secrets: inherit

@@ -108,15 +108,18 @@ jobs:
         run: rm build.qt6.tar.zst
 
       - name: Download mame-lr (${{ inputs.DEVICE }})
+        continue-on-error: true
         uses: actions/download-artifact@v4
         with:
           name: mame-lr (${{ inputs.DEVICE }})
 
       - name: Extract artifact mame-lr
+        continue-on-error: true
         run: |
           tar --zstd -xf build.mame-lr.tar.zst
 
       - name: Clean up compressed mame-lr file
+        continue-on-error: true
         run: rm build.mame-lr.tar.zst
 
       - name: Build
