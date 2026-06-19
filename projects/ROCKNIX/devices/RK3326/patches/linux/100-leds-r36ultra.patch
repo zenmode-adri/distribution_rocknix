@@ -454,10 +454,11 @@ diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
 index 222222222222..333333333333 100644
 --- a/drivers/leds/Kconfig	2026-06-14 16:48:18.652093807 +0800
 +++ b/drivers/leds/Kconfig	2026-06-14 16:48:18.656092201 +0800
-@@ -627,6 +627,12 @@
+@@ -664,6 +664,12 @@ config LEDS_PWM
+ 	depends on PWM
  	help
  	  This option enables support for pwm driven LEDs
- 
++
 +config LEDS_R36ULTRA
 +	tristate "R36Ultra RGB LED support"
 +	depends on LEDS_CLASS && GPIOLIB && OF
@@ -471,11 +472,10 @@ diff --git a/drivers/leds/Makefile b/drivers/leds/Makefile
 index 222222222222..333333333333 100644
 --- a/drivers/leds/Makefile	2026-06-14 16:48:18.656092201 +0800
 +++ b/drivers/leds/Makefile	2026-06-14 16:48:18.656092201 +0800
-@@ -79,6 +79,7 @@
- obj-$(CONFIG_LEDS_PM8058)		+= leds-pm8058.o
+@@ -85,6 +85,7 @@ obj-$(CONFIG_LEDS_PM8058)		+= leds-pm8058.o
  obj-$(CONFIG_LEDS_POWERNV)		+= leds-powernv.o
  obj-$(CONFIG_LEDS_PWM)			+= leds-pwm.o
 +obj-$(CONFIG_LEDS_R36ULTRA)		+= leds-r36ultra.o
- obj-$(CONFIG_LEDS_REGULATOR)		+= leds-regulator.o
+ obj-$(CONFIG_LEDS_QNAP_MCU)		+= leds-qnap-mcu.o
  obj-$(CONFIG_LEDS_SC27XX_BLTC)		+= leds-sc27xx-bltc.o
  obj-$(CONFIG_LEDS_SUN50I_A100)		+= leds-sun50i-a100.o

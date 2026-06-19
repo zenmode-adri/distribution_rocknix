@@ -81,22 +81,22 @@
   SAMBA_SUPPORT="no"
 
 # build and install Samba Server (yes / no)
-  SAMBA_SERVER="yes"
+  SAMBA_SERVER="no"
 
 # build and install SFTP Server (yes / no)
   SFTP_SERVER="yes"
 
 # build and install Simple HTTP Server (yes / no)
-  SIMPLE_HTTP_SERVER="yes"
+  SIMPLE_HTTP_SERVER="no"
 
 # build and install OpenVPN support (yes / no)
   OPENVPN_SUPPORT="no"
 
 # build and install ZeroTier support (yes / no)
-  ZEROTIER_SUPPORT="yes"
+  ZEROTIER_SUPPORT="no"
 
 # build and install WireGuard support (yes / no)
-  WIREGUARD_SUPPORT="yes"
+  WIREGUARD_SUPPORT="no"
 
 # build and install diskmounter support (udevil)
 # this service provide auto mounting support for external drives in the
@@ -119,10 +119,10 @@
   CONTAINER_SUPPORT="${CONTAINER_SUPPORT:-no}"
 
 # Build modules packages
-  MODULES_PKG="${MODULES_PKG:-yes}"
+  MODULES_PKG="${MODULES_PKG:-no}"
 
 # Support for debug tools such as strace
-  DEBUG_PACKAGES="${DEBUG_PACKAGES:-yes}"
+  DEBUG_PACKAGES="${DEBUG_PACKAGES:-no}"
 
 # Windowmanager to use (weston / swaywm-env / no)
   WINDOWMANAGER="none"
@@ -133,7 +133,7 @@
   GRAPHIC_DRIVERS=""
 
 # build and install remote support (yes / no)
-  REMOTE_SUPPORT="yes"
+  REMOTE_SUPPORT="no"
 
 # build and install Joystick support (yes / no)
   JOYSTICK_SUPPORT="yes"
@@ -177,10 +177,10 @@
   CRON_SUPPORT="no"
 
 # htop tool (yes / no)
-  HTOP_TOOL="yes"
+  HTOP_TOOL="no"
 
 # btop tool (yes / no)
-  BTOP_TOOL="yes"
+  BTOP_TOOL="no"
 
 # Distribution Specific source location
   DISTRO_MIRROR="https://github.com/ROCKNIX/distribution-sources/releases/download/sources"

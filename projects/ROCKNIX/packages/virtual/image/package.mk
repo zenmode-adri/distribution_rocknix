@@ -17,17 +17,17 @@ PKG_DEPENDS_TARGET="toolchain squashfs-tools:host dosfstools:host fakeroot:host 
 
 PKG_UI="emulationstation es-themes textviewer"
 
-PKG_UI_TOOLS="fbgrab grim"
+PKG_UI_TOOLS="grim"
 
-PKG_GRAPHICS="imagemagick"
+PKG_GRAPHICS=""
 
 PKG_FONTS="corefonts"
 
-PKG_MULTIMEDIA="ffmpeg vlc mpv gmu m8c"
+PKG_MULTIMEDIA="ffmpeg"
 
-PKG_SOUND="espeak libao"
+PKG_SOUND=""
 
-PKG_SYNC="synctools"
+PKG_SYNC=""
 
 PKG_TOOLS="patchelf i2c-tools evtest"
 
@@ -39,7 +39,7 @@ then
   ENABLE_32BIT=no
   PKG_DEPENDS_TARGET+=" ${PKG_TOOLS} ${PKG_FONTS}"
 else
-  PKG_DEPENDS_TARGET+=" ${PKG_TOOLS} ${PKG_FONTS} ${PKG_SOUND} ${PKG_SYNC} ${PKG_GRAPHICS} ${PKG_UI} ${PKG_UI_TOOLS} ${PKG_MULTIMEDIA} misc-packages rocknix-meta rocknix-user-docs"
+  PKG_DEPENDS_TARGET+=" ${PKG_TOOLS} ${PKG_FONTS} ${PKG_SOUND} ${PKG_SYNC} ${PKG_GRAPHICS} ${PKG_UI} ${PKG_UI_TOOLS} ${PKG_MULTIMEDIA}"
 
   # GL demos and tools
   [[ ! -z "${OPENGL_SUPPORT}" ]] && PKG_DEPENDS_TARGET+=" mesa-demos"

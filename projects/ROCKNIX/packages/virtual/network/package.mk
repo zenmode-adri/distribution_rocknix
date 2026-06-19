@@ -7,7 +7,7 @@ PKG_VERSION=""
 PKG_LICENSE="various"
 PKG_SITE="https://libreelec.tv"
 PKG_URL=""
-PKG_DEPENDS_TARGET="toolchain connman netbase ethtool openssh iw wireless-regdb rsync tailscale avahi miniupnpc nss-mdns speedtest-cli"
+PKG_DEPENDS_TARGET="toolchain connman netbase iw wireless-regdb"
 
 case "${WIRELESS_DAEMON}" in
   wpa_supplicant)
