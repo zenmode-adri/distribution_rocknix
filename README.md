@@ -6,6 +6,25 @@ ROCKNIX is an immutable Linux distribution for handheld gaming devices developed
 
 ## About This Fork
 
+This is an **unofficial** fork of [AURKNIX](https://github.com/AveyondFly/distribution_rocknix) by lcdyk/KK, which is itself a fork of ROCKNIX. This fork targets the **R36S / R36 Ultra** specifically and diverges in the following areas:
+
+### Differences from AURKNIX
+
+| Feature | AURKNIX | This fork |
+|---------|---------|-----------|
+| Display stack | Sway (Wayland) | Framebuffer direct (no compositor) |
+| Battery life | ~1.5–2h | ~3–4h (no Sway overhead) |
+| WiFi (RTL8723BU) | Not bundled | Included out-of-the-box |
+| GPU driver | Panfrost / libmali | libmali (GLES 3.2, better perf) |
+| OC support | Stock clocks | CPU 1512MHz / GPU 600MHz / DMC 924MHz via DTB |
+| Kernel | 6.12 LTS | 6.12 LTS |
+
+**Why no Sway?** Sway consumes significant CPU/GPU even at idle. EmulationStation runs fine directly on `/dev/fb0` via DRM fbdev emulation, matching dArkOSRE's battery life.
+
+This fork does **not** aim to replace AURKNIX — it has a different philosophy (battery + emulation performance over desktop compositor features). Fixes that benefit both projects are submitted upstream when applicable.
+
+---
+
 This is an **unofficial** fork of ROCKNIX that provides support for additional devices and emulators not included in the official distribution.
 
 ### Additional Emulators
