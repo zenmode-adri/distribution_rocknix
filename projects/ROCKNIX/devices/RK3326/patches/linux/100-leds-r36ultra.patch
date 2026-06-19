@@ -17,17 +17,13 @@ index f4a0a3c..03df0d6 100644
  	tristate "REGULATOR driven LED support"
  	depends on LEDS_CLASS
 diff --git a/drivers/leds/Makefile b/drivers/leds/Makefile
-index 8fdb45d..632b897 100644
 --- a/drivers/leds/Makefile
 +++ b/drivers/leds/Makefile
-@@ -83,6 +83,7 @@ obj-$(CONFIG_LEDS_PCA995X)		+= leds-pca995x.o
- obj-$(CONFIG_LEDS_PM8058)		+= leds-pm8058.o
- obj-$(CONFIG_LEDS_POWERNV)		+= leds-powernv.o
+@@ -80,3 +80,4 @@
  obj-$(CONFIG_LEDS_PWM)			+= leds-pwm.o
 +obj-$(CONFIG_LEDS_R36ULTRA)		+= leds-r36ultra.o
  obj-$(CONFIG_LEDS_QNAP_MCU)		+= leds-qnap-mcu.o
  obj-$(CONFIG_LEDS_REGULATOR)		+= leds-regulator.o
- obj-$(CONFIG_LEDS_SC27XX_BLTC)		+= leds-sc27xx-bltc.o
 diff --git a/drivers/leds/leds-r36ultra.c b/drivers/leds/leds-r36ultra.c
 new file mode 100644
 index 0000000..801d327
