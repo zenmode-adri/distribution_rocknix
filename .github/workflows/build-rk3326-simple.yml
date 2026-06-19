@@ -1,0 +1,15 @@
+name: Build RK3326
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-rk3326:
+    uses: ./.github/workflows/build-device.yml
+    with:
+      PROJECT: ROCKNIX
+      DEVICE: RK3326
+      OWNER_LC: zenmode-adri
+      NIGHTLY: false
+      OFFICIAL: false
+    secrets: inherit
