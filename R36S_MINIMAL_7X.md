@@ -41,12 +41,12 @@ Ubicación: `projects/ROCKNIX/devices/RK3326/patches/linux/`
 | `004-input-drivers.patch` | OK | Se quitó workaround del cargador rk817 |
 | `005-unigue-gpio-guid.patch` | OK | Aplica limpio |
 | `007-ogs-panel-timings.patch` | OK | Aplica limpio |
-| `008-esp-8089-wifi.patch` | OK | Actualizado contexto Kconfig/Makefile |
+| `008-esp-8089-wifi.patch` | OK | Regenerado para 7.1 (contexto Kconfig/Makefile + líneas en blanco entre diffs) |
 | `020-elida-refresh-rates.patch` | OK | Aplica limpio |
 | `022-usb-role-switch.patch` | OK | Aplica limpio |
 | `025-mainline-linux-fix-for-mipi.patch` | OK | Aplica limpio |
-| `099-drm-rockchip-add-vop-brightness-crtc-control.patch` | OK | Se quitó parte de VOP2 (no usado en RK3326) |
-| `100-leds-r36ultra.patch` | OK | Actualizado contexto Kconfig/Makefile |
+| `099-drm-rockchip-add-vop-brightness-crtc-control.patch` | OK | Regenerado para 7.1; VOP2 omitido (no usado en RK3326), `linux/iopoll.h` ya presente en 7.1 |
+| `100-leds-r36ultra.patch` | OK | Regenerado para 7.1 (contexto Kconfig/Makefile actualizado) |
 | `024-mainline-linux-hacks-for-rk915.patch` | **Eliminado** | Movido a `linux-6.12/` porque se quitó el driver rk915 |
 
 ## Cómo compilar

@@ -1,0 +1,5 @@
+# Force LF-only line endings for Linux kernel patches so they stay valid
+# across Windows checkouts.
+projects/ROCKNIX/devices/RK3326/patches/linux/*.patch text eol=lf
+*.sh text eol=lf
+.gitattributes text eol=lf

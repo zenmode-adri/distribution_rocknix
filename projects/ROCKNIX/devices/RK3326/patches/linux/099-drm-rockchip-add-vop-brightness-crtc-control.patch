@@ -1,19 +1,5 @@
-From d248da4024fbf9b5996c61ffa0af07436b4ec634 Mon Sep 17 00:00:00 2001
-From: kk <kk@ubuntu>
-Date: Thu, 7 May 2026 10:41:55 +0800
-Subject: [PATCH] drm/rockchip: add vop/vop2 bcsh crtc controls
-
-Expose contrast, saturation, and hue controls on RK356x VOP2 CRTCs and program the VP BCSH block from atomic state.
----
- drivers/gpu/drm/rockchip/rockchip_drm_drv.h  |   4 +
- drivers/gpu/drm/rockchip/rockchip_drm_vop.c  | 186 ++++++++++++++++
- drivers/gpu/drm/rockchip/rockchip_drm_vop.h  |  13 ++
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 215 +++++++++++++++++++
- drivers/gpu/drm/rockchip/rockchip_vop_reg.c  |  26 +++
- 5 files changed, 444 insertions(+)
-
 diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_drv.h b/drivers/gpu/drm/rockchip/rockchip_drm_drv.h
-index 8d566fcd80a2..d68983cd1f95 100644
+index 2e86ad0..d5d9da2 100644
 --- a/drivers/gpu/drm/rockchip/rockchip_drm_drv.h
 +++ b/drivers/gpu/drm/rockchip/rockchip_drm_drv.h
 @@ -53,6 +53,10 @@ struct rockchip_crtc_state {
@@ -28,24 +14,10 @@ index 8d566fcd80a2..d68983cd1f95 100644
  #define to_rockchip_crtc_state(s) \
  		container_of(s, struct rockchip_crtc_state, base)
 diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-index 69900138295b..6d746016aa1e 100644
+index 572f4ad..8d7a027 100644
 --- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
 +++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-@@ -7,6 +7,7 @@
- #include <linux/clk.h>
- #include <linux/component.h>
- #include <linux/delay.h>
- #include <linux/iopoll.h>
- #include <linux/kernel.h>
- #include <linux/log2.h>
-@@ -28,6 +29,7 @@
- #include <drm/drm_gem_atomic_helper.h>
- #include <drm/drm_gem_framebuffer_helper.h>
- #include <drm/drm_probe_helper.h>
- #include <drm/drm_self_refresh_helper.h>
- #include <drm/drm_vblank.h>
- 
-@@ -106,6 +108,17 @@
+@@ -107,6 +107,17 @@
  #define to_vop(x) container_of(x, struct vop, crtc)
  #define to_vop_win(x) container_of(x, struct vop_win, base)
  
@@ -63,7 +35,7 @@ index 69900138295b..6d746016aa1e 100644
  #define AFBC_FMT_RGB565		0x0
  #define AFBC_FMT_U8U8U8U8	0x5
  #define AFBC_FMT_U8U8U8		0x4
-@@ -184,6 +197,11 @@ struct vop {
+@@ -185,6 +196,11 @@ struct vop {
  	/* optional internal rgb encoder */
  	struct rockchip_rgb *rgb;
  
@@ -75,7 +47,7 @@ index 69900138295b..6d746016aa1e 100644
  	struct vop_win win[];
  };
  
-@@ -228,6 +246,72 @@ static void vop_reg_set(struct vop *vop, const struct vop_reg *reg,
+@@ -229,6 +245,72 @@ static void vop_reg_set(struct vop *vop, const struct vop_reg *reg,
  		writel(v, vop->regs + offset);
  }
  
@@ -148,7 +120,7 @@ index 69900138295b..6d746016aa1e 100644
  static inline uint32_t vop_get_intr_type(struct vop *vop,
  					 const struct vop_reg *reg, int type)
  {
-@@ -1459,6 +1543,7 @@ static void vop_crtc_atomic_enable(struct drm_crtc *crtc,
+@@ -1459,6 +1541,7 @@ static void vop_crtc_atomic_enable(struct drm_crtc *crtc,
  	}
  
  	VOP_REG_SET(vop, common, out_mode, s->output_mode);
@@ -156,7 +128,7 @@ index 69900138295b..6d746016aa1e 100644
  
  	VOP_REG_SET(vop, modeset, htotal_pw, (htotal << 16) | hsync_len);
  	val = hact_st << 16;
-@@ -1581,6 +1666,7 @@ static void vop_crtc_atomic_flush(struct drm_crtc *crtc,
+@@ -1581,6 +1664,7 @@ static void vop_crtc_atomic_flush(struct drm_crtc *crtc,
  	/* Enable AFBC if there is some AFBC window, disable otherwise. */
  	s = to_rockchip_crtc_state(crtc->state);
  	VOP_AFBC_SET(vop, enable, s->enable_afbc);
@@ -164,7 +136,7 @@ index 69900138295b..6d746016aa1e 100644
  	vop_cfg_done(vop);
  
  	/* Ack the DMA transfer of the previous frame (RK3066). */
-@@ -1668,6 +1754,13 @@ static void vop_crtc_reset(struct drm_crtc *crtc)
+@@ -1667,6 +1751,13 @@ static void vop_crtc_reset(struct drm_crtc *crtc)
  		__drm_atomic_helper_crtc_reset(crtc, &crtc_state->base);
  	else
  		__drm_atomic_helper_crtc_reset(crtc, NULL);
@@ -178,7 +150,7 @@ index 69900138295b..6d746016aa1e 100644
  }
  
  #ifdef CONFIG_DRM_ANALOGIX_DP
-@@ -1735,11 +1828,60 @@ vop_crtc_verify_crc_source(struct drm_crtc *crtc, const char *source_name,
+@@ -1734,11 +1825,60 @@ vop_crtc_verify_crc_source(struct drm_crtc *crtc, const char *source_name,
  }
  #endif
  
@@ -239,7 +211,7 @@ index 69900138295b..6d746016aa1e 100644
  	.atomic_duplicate_state = vop_crtc_duplicate_state,
  	.atomic_destroy_state = vop_crtc_destroy_state,
  	.enable_vblank = vop_crtc_enable_vblank,
-@@ -1853,6 +1995,35 @@ static void vop_plane_add_properties(struct drm_plane *plane,
+@@ -1852,6 +1992,35 @@ static void vop_plane_add_properties(struct drm_plane *plane,
  						   DRM_MODE_ROTATE_0 | flags);
  }
  
@@ -253,17 +225,17 @@ index 69900138295b..6d746016aa1e 100644
 +							 VOP_BCSH_PROP_MIN,
 +							 VOP_BCSH_PROP_MAX);
 +	vop->contrast_prop = drm_property_create_range(vop->drm_dev, 0,
-+						       "contrast",
-+						       VOP_BCSH_PROP_MIN,
-+						       VOP_BCSH_PROP_MAX);
++					       "contrast",
++					       VOP_BCSH_PROP_MIN,
++					       VOP_BCSH_PROP_MAX);
 +	vop->saturation_prop = drm_property_create_range(vop->drm_dev, 0,
 +							 "saturation",
 +							 VOP_BCSH_PROP_MIN,
 +							 VOP_BCSH_PROP_MAX);
 +	vop->hue_prop = drm_property_create_range(vop->drm_dev, 0,
-+						  "hue",
-+						  VOP_BCSH_PROP_MIN,
-+						  VOP_BCSH_PROP_MAX);
++					  "hue",
++					  VOP_BCSH_PROP_MIN,
++					  VOP_BCSH_PROP_MAX);
 +
 +	if (!vop->brightness_prop || !vop->contrast_prop ||
 +	    !vop->saturation_prop || !vop->hue_prop)
@@ -275,7 +247,7 @@ index 69900138295b..6d746016aa1e 100644
  static int vop_create_crtc(struct vop *vop)
  {
  	const struct vop_data *vop_data = vop->data;
-@@ -1904,6 +2075,21 @@ static int vop_create_crtc(struct vop *vop)
+@@ -1903,6 +2072,21 @@ static int vop_create_crtc(struct vop *vop)
  		goto err_cleanup_planes;
  
  	drm_crtc_helper_add(crtc, &vop_crtc_helper_funcs);
@@ -298,7 +270,7 @@ index 69900138295b..6d746016aa1e 100644
  		drm_mode_crtc_set_gamma_size(crtc, vop_data->lut_size);
  		drm_crtc_enable_color_mgmt(crtc, 0, false, vop_data->lut_size);
 diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
-index 0cf512cc1614..aabe65835650 100644
+index f04c973..cd57e02 100644
 --- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
 +++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
 @@ -125,6 +125,19 @@ struct vop_common {
@@ -321,7 +293,8 @@ index 0cf512cc1614..aabe65835650 100644
  };
  
  struct vop_misc {
-index 9873172e3fd3..21e96469e6fc 100644
+diff --git a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
+index b2f8ebf..6633522 100644
 --- a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
 +++ b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
 @@ -275,6 +275,19 @@ static const struct vop_common px30_common = {
@@ -344,7 +317,7 @@ index 9873172e3fd3..21e96469e6fc 100644
  };
  
  static const struct vop_modeset px30_modeset = {
-@@ -1145,6 +1158,19 @@ static const struct vop_common rk3328_common = {
+@@ -1146,6 +1159,19 @@ static const struct vop_common rk3328_common = {
  	.dsp_blank = VOP_REG(RK3328_DSP_CTRL0, 0x3, 18),
  	.out_mode = VOP_REG(RK3328_DSP_CTRL0, 0xf, 0),
  	.cfg_done = VOP_REG_SYNC(RK3328_REG_CFG_DONE, 0x1, 0),
@@ -364,6 +337,3 @@ index 9873172e3fd3..21e96469e6fc 100644
  };
  
  static const struct vop_intr rk3328_vop_intr = {
--- 
-2.34.1
-

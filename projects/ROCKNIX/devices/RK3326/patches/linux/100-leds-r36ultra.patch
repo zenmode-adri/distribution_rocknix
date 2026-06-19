@@ -1,17 +1,36 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: lcdyk0517 <lcdyk0517@qq.com>
-Subject: [PATCH] leds: add R36Ultra RGB LED driver
-
-Add kernel driver for R36Ultra joystick RGB LED control via
-single-wire pulse protocol. Based on JoyLed project:
-https://github.com/lcdyk0517/JoyLed
-
-Enable with CONFIG_LEDS_R36ULTRA and DTS compatible "r36ultra,led".
-
----
+diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
+index f4a0a3c..03df0d6 100644
+--- a/drivers/leds/Kconfig
++++ b/drivers/leds/Kconfig
+@@ -668,6 +668,13 @@ config LEDS_PWM
+ 	help
+ 	  This option enables support for pwm driven LEDs
+ 
++config LEDS_R36ULTRA
++	tristate "R36Ultra RGB LED support"
++	depends on LEDS_CLASS && GPIOLIB && OF
++	help
++	  This option enables support for the R36Ultra RGB LED controller
++	  using a single-wire pulse protocol.
++
+ config LEDS_REGULATOR
+ 	tristate "REGULATOR driven LED support"
+ 	depends on LEDS_CLASS
+diff --git a/drivers/leds/Makefile b/drivers/leds/Makefile
+index 8fdb45d..632b897 100644
+--- a/drivers/leds/Makefile
++++ b/drivers/leds/Makefile
+@@ -83,6 +83,7 @@ obj-$(CONFIG_LEDS_PCA995X)		+= leds-pca995x.o
+ obj-$(CONFIG_LEDS_PM8058)		+= leds-pm8058.o
+ obj-$(CONFIG_LEDS_POWERNV)		+= leds-powernv.o
+ obj-$(CONFIG_LEDS_PWM)			+= leds-pwm.o
++obj-$(CONFIG_LEDS_R36ULTRA)		+= leds-r36ultra.o
+ obj-$(CONFIG_LEDS_QNAP_MCU)		+= leds-qnap-mcu.o
+ obj-$(CONFIG_LEDS_REGULATOR)		+= leds-regulator.o
+ obj-$(CONFIG_LEDS_SC27XX_BLTC)		+= leds-sc27xx-bltc.o
 diff --git a/drivers/leds/leds-r36ultra.c b/drivers/leds/leds-r36ultra.c
 new file mode 100644
-index 000000000000..111111111111
+index 0000000..801d327
 --- /dev/null
 +++ b/drivers/leds/leds-r36ultra.c
 @@ -0,0 +1,435 @@
@@ -450,32 +469,3 @@ index 000000000000..111111111111
 +MODULE_AUTHOR("lcdyk0517@qq.com");
 +MODULE_DESCRIPTION("R36Ultra RGB LED 驱动 - 单线脉冲协议");
 +MODULE_LICENSE("GPL");
-diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
-index 222222222222..333333333333 100644
---- a/drivers/leds/Kconfig	2026-06-14 16:48:18.652093807 +0800
-+++ b/drivers/leds/Kconfig	2026-06-14 16:48:18.656092201 +0800
-@@ -664,6 +664,12 @@ config LEDS_PWM
- 	depends on PWM
- 	help
- 	  This option enables support for pwm driven LEDs
-+
-+config LEDS_R36ULTRA
-+	tristate "R36Ultra RGB LED support"
-+	depends on LEDS_CLASS && GPIOLIB && OF
-+	help
-+	  This option enables support for the R36Ultra RGB LED controller
-+	  using a single-wire pulse protocol.
- 
- config LEDS_REGULATOR
- 	tristate "REGULATOR driven LED support"
-diff --git a/drivers/leds/Makefile b/drivers/leds/Makefile
-index 222222222222..333333333333 100644
---- a/drivers/leds/Makefile	2026-06-14 16:48:18.656092201 +0800
-+++ b/drivers/leds/Makefile	2026-06-14 16:48:18.656092201 +0800
-@@ -85,6 +85,7 @@ obj-$(CONFIG_LEDS_PM8058)		+= leds-pm8058.o
- obj-$(CONFIG_LEDS_POWERNV)		+= leds-powernv.o
- obj-$(CONFIG_LEDS_PWM)			+= leds-pwm.o
-+obj-$(CONFIG_LEDS_R36ULTRA)		+= leds-r36ultra.o
- obj-$(CONFIG_LEDS_QNAP_MCU)		+= leds-qnap-mcu.o
- obj-$(CONFIG_LEDS_SC27XX_BLTC)		+= leds-sc27xx-bltc.o
- obj-$(CONFIG_LEDS_SUN50I_A100)		+= leds-sun50i-a100.o
