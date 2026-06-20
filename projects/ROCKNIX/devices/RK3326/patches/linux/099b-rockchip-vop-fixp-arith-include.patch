@@ -1,0 +1,18 @@
+From: fix build after applying BCSH patch on 6.12 kernel
+Subject: [PATCH] drm/rockchip: add missing fixp-arith.h include for vop BCSH code
+
+Patch 099 adds BCSH (brightness/contrast/saturation/hue) code that calls
+fixp_linear_interpolate(), fixp_sin32(), and fixp_cos32() but does not add
+the required header. In Linux 7.x these functions were already included
+transitively, but in 6.12.x they are not. Add the include explicitly.
+
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -9,6 +9,7 @@
+ #include <linux/clk.h>
+ #include <linux/component.h>
+ #include <linux/delay.h>
++#include <linux/fixp-arith.h>
+ #include <linux/iopoll.h>
+ #include <linux/kernel.h>
+ #include <linux/log2.h>
