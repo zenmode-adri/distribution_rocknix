@@ -26,9 +26,9 @@ pre_configure() {
 }
 
 pre_configure_target() {
-  PKG_CMAKE_OPTS_TARGET+="      -DBUILD_UTILS=OFF \
-				-DGLEW_REGAL=OFF \
-				-DGLEW_OSMESA=OFF \
-				-DGLEW_EGL=ON \
-				-DBUILD_SHARED_LIBS=ON"
+  PKG_CMAKE_OPTS_TARGET+="      -DBUILD_UTILS=OFF \n				-DGLEW_REGAL=OFF \n				-DGLEW_OSMESA=OFF \n				-DGLEW_EGL=ON \n				-DBUILD_SHARED_LIBS=ON"
+
+  if [ ! "${DISPLAYSERVER}" = "x11" ] && [ ! "${DISPLAYSERVER}" = "wl" ]; then
+    PKG_CMAKE_OPTS_TARGET+=" -DOPENGL_USE_EGL=TRUE -DGLEW_X11=OFF"
+  fi
 }
