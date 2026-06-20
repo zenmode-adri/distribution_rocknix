@@ -65,7 +65,6 @@ elif [ "${DISPLAYSERVER}" = "wl" ]; then
   export X11_INCLUDES=
 else
   PKG_MESON_OPTS_TARGET+="	-Dplatforms="" \
-				-Dgallium-nine=false \
 				-Dglx=disabled \
 				-Dglvnd=disabled"
 fi
