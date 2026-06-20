@@ -21,8 +21,9 @@ if [ "${DISPLAYSERVER}" = "x11" ] || [ "${DISPLAYSERVER}" = "wl" ]; then
     PKG_CMAKE_OPTS_TARGET+=" -DDEFAULT_OPENGL_PROFILE=OpenGLES2"
   fi
 else
-  PKG_DEPENDS_TARGET+=" ${OPENGLES}"
-  PKG_CMAKE_OPTS_TARGET+=" -DDEFAULT_OPENGL_PROFILE=OpenGLES2"
+  # No GLX/desktop GL on EGL-only platforms — melonDS cmake links OpenGL::GL unconditionally
+  # Software renderer works fine for NDS at native 256x192 on A35
+  PKG_CMAKE_OPTS_TARGET=" -DENABLE_OPENGL=OFF"
 fi
 
 makeinstall_target() {
