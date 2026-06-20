@@ -24,7 +24,6 @@ if [ "${OPENGLES}" != "no" ]; then
   PKG_DEPENDS_TARGET+=" ${OPENGLES}"
 fi
 
-if [ "${DISPLAYSERVER}" != "x11" ] && \
-   [ "${DISPLAYSERVER}" != "wl" ]; then
-  PKG_CONFIGURE_OPTS_TARGET="--disable-glx"
+if [ "${DISPLAYSERVER}" != "x11" ] &&    [ "${DISPLAYSERVER}" != "wl" ]; then
+  PKG_MESON_OPTS_TARGET="-Dglx=no"
 fi
