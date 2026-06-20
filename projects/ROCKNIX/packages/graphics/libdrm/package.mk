@@ -1,4 +1,3 @@
-
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
@@ -42,9 +41,10 @@ listcontains "${GRAPHIC_DRIVERS}" "etnaviv" &&
   PKG_MESON_OPTS_TARGET+=" -Detnaviv=enabled" || PKG_MESON_OPTS_TARGET+=" -Detnaviv=disabled"
 
 pre_build_target() {
-  # Recover from corrupt meson state: meson-private exists but build.ninja is missing
+  # When ccache restores meson-info but not build.ninja, meson says "already configured"
+  # and skips setup, then ninja fails. Remove the entire build subdir to force reconfigure.
   if [ -d "${PKG_BUILD}/.${TARGET_NAME}" ] && [ ! -f "${PKG_BUILD}/.${TARGET_NAME}/build.ninja" ]; then
-    rm -rf "${PKG_BUILD}/.${TARGET_NAME}/meson-private"
+    rm -rf "${PKG_BUILD}/.${TARGET_NAME}"
   fi
 }
 
