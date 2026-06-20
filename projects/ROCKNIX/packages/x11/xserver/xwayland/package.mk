@@ -50,7 +50,7 @@ PKG_MESON_OPTS_TARGET+=" -Dxvfb=false \
                        -Ddocs=false \
                        -Ddevel-docs=false"
 
-if [ ! "${OPENGL}" = "no" ]; then
+if [ ! "${OPENGL}" = "no" ] && { [ "${DISPLAYSERVER}" = "x11" ] || [ "${DISPLAYSERVER}" = "wl" ]; }; then
   PKG_DEPENDS_TARGET+=" ${OPENGL} libepoxy"
   PKG_MESON_OPTS_TARGET+=" -Dglx=true \
                            -Dglamor=true"
