@@ -19,7 +19,12 @@ configure_package() {
 pre_configure_target(){
   if [ "${OPENGL_SUPPORT}" = "yes" ]
   then
-    PKG_MESON_OPTS_TARGET+=" -Degl=true -Dglx=enabled -Dheaders=true"
+    PKG_MESON_OPTS_TARGET+=" -Degl=true -Dheaders=true"
+    if [ "${DISPLAYSERVER}" = "x11" ] || [ "${DISPLAYSERVER}" = "wl" ]; then
+      PKG_MESON_OPTS_TARGET+=" -Dglx=enabled"
+    else
+      PKG_MESON_OPTS_TARGET+=" -Dglx=disabled"
+    fi
   fi
     
   if [ "${OPENGLES_SUPPORT}" = "yes" ]
@@ -29,4 +34,3 @@ pre_configure_target(){
     PKG_MESON_OPTS_TARGET+=" -Dgles1=false -Dgles2=false"
   fi
 }
-
