@@ -81,6 +81,7 @@ jobs:
           fetch-depth: 0
 
       - name: Get user manual PDFs bundle
+        continue-on-error: true
         uses: actions/download-artifact@v4
         with:
           name: rocknix-user-manuals-pdfs
@@ -88,11 +89,14 @@ jobs:
 
       - name: Stage user manual PDFs for rocknix-user-docs
         run: |
-          set -e
           PRE=documentation/user_man/prebuilt-pdf
           rm -rf "${PRE}"
           mkdir -p "${PRE}"
-          tar -xzf /tmp/user-manuals-art/rocknix-user-manuals-pdfs.tar.gz -C "${PRE}"
+          if [ -f /tmp/user-manuals-art/rocknix-user-manuals-pdfs.tar.gz ]; then
+            tar -xzf /tmp/user-manuals-art/rocknix-user-manuals-pdfs.tar.gz -C "${PRE}"
+          else
+            echo "No user manuals artifact; skipping PDF staging"
+          fi
           ls -la "${PRE}"
 
       - name: Get DtbselectWin64 (PyInstaller) for /flash
